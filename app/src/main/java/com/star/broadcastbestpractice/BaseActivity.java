@@ -2,7 +2,6 @@ package com.star.broadcastbestpractice;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -65,15 +64,12 @@ public class BaseActivity extends AppCompatActivity {
                     .setTitle("Warning")
                     .setMessage("You are forced to be offline. Please try to login in again.")
                     .setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                    .setPositiveButton("OK", (dialog, which) -> {
 
-                            ActivityCollector.finishAll();
+                        ActivityCollector.finishAll();
 
-                            Intent intent = new Intent(context, LoginActivity.class);
-                            context.startActivity(intent);
-                        }
+                        Intent intent1 = new Intent(context, LoginActivity.class);
+                        context.startActivity(intent1);
                     })
                     .show();
         }

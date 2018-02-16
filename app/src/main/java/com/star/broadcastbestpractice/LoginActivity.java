@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -36,10 +35,10 @@ public class LoginActivity extends BaseActivity {
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        mAccountEditText = (EditText) findViewById(R.id.account);
-        mPasswordEditText = (EditText) findViewById(R.id.password);
+        mAccountEditText = findViewById(R.id.account);
+        mPasswordEditText = findViewById(R.id.password);
 
-        mRememberPasswordCheckBox = (CheckBox) findViewById(R.id.remember_pass_check_box);
+        mRememberPasswordCheckBox = findViewById(R.id.remember_pass_check_box);
 
         boolean isRemember = mSharedPreferences.getBoolean(REMEMBER_PASSWORD, false);
         if (isRemember) {
@@ -52,34 +51,31 @@ public class LoginActivity extends BaseActivity {
             mRememberPasswordCheckBox.setChecked(true);
         }
 
-        mLoginButton = (Button) findViewById(R.id.login);
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mLoginButton = findViewById(R.id.login);
+        mLoginButton.setOnClickListener(v -> {
 
-                String account = mAccountEditText.getText().toString();
-                String password = mPasswordEditText.getText().toString();
+            String account = mAccountEditText.getText().toString();
+            String password = mPasswordEditText.getText().toString();
 
-                if (ACCOUNT_VALUE.equals(account) && PASSWORD_VALUE.equals(password)) {
+            if (ACCOUNT_VALUE.equals(account) && PASSWORD_VALUE.equals(password)) {
 
-                    mEditor = mSharedPreferences.edit();
+                mEditor = mSharedPreferences.edit();
 
-                    if (mRememberPasswordCheckBox.isChecked()) {
-                        mEditor.putString(ACCOUNT_KEY, ACCOUNT_VALUE);
-                        mEditor.putString(PASSWORD_KEY, PASSWORD_VALUE);
-                        mEditor.putBoolean(REMEMBER_PASSWORD, true);
-                    } else {
-                        mEditor.clear();
-                    }
-
-                    mEditor.apply();
-
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
+                if (mRememberPasswordCheckBox.isChecked()) {
+                    mEditor.putString(ACCOUNT_KEY, ACCOUNT_VALUE);
+                    mEditor.putString(PASSWORD_KEY, PASSWORD_VALUE);
+                    mEditor.putBoolean(REMEMBER_PASSWORD, true);
                 } else {
-                    Toast.makeText(LoginActivity.this, "Account or Password is invalid",
-                            Toast.LENGTH_LONG).show();
+                    mEditor.clear();
                 }
+
+                mEditor.apply();
+
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            } else {
+                Toast.makeText(LoginActivity.this, "Account or Password is invalid",
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
